@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Payment Gateway | Platinum Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dana: linear-gradient(135deg, #1181e8 0%, #2a9df4 100%);
+            --gopay: linear-gradient(135deg, #00aa13 0%, #00c853 100%);
+            --bank: linear-gradient(135deg, #6a5acd 0%, #9370db 100%);
+            --qris: linear-gradient(135deg, #ff6600 0%, #ff8c00 100%);
+            --gold: linear-gradient(135deg, #D4AF37 0%, #F9D423 100%);
+            --platinum: linear-gradient(135deg, #E5E4E2 0%, #FFFFFF 100%);
+            --diamond: linear-gradient(135deg, #b9f2ff 0%, #e2f1ff 100%);
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --vip-bg: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1064&q=80');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            background-image: var(--vip-bg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.85);
+            z-index: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, rgba(106, 90, 205, 0.8) 0%, rgba(147, 112, 219, 0.8) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-weight: 300;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .vip-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #1a1a2e;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .payment-methods {
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background: linear-gradient(to bottom, #9370db, #6a5acd);
+            border-radius: 5px;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            font-size: 22px;
+            color: #9370db;
+        }
+        
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .method-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            z-index: 0;
+        }
+        
+        .method-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .method-card.active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .method-card.dana {
+            border-top: 3px solid #1181e8;
+        }
+        
+        .method-card.gopay {
+            border-top: 3px solid #00aa13;
+        }
+        
+        .method-card.bank {
+            border-top: 3px solid #6a5acd;
+        }
+        
+        .method-card.qris {
+            border-top: 3px solid #ff6600;
+        }
+        
+        .method-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            margin-right: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .method-icon.dana {
+            background: var(--dana);
+        }
+        
+        .method-icon.gopay {
+            background: var(--gopay);
+        }
+        
+        .method-icon.bank {
+            background: var(--bank);
+        }
+        
+        .method-icon.qris {
+            background: var(--qris);
+        }
+        
+        .method-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .method-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+            font-weight: 300;
+        }
+        
+        .method-content {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), padding 0.5s ease;
+        }
+        
+        .method-content.active {
+            padding: 0 25px 25px;
+            max-height: 1500px;
+        }
+        
+        .payment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .payment-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #9370db, #6a5acd);
+        }
+        
+        .payment-info:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .payment-label {
+            font-weight: 500;
+            min-width: 140px;
+            color: white;
+            font-size: 15px;
+        }
+        
+        .payment-value {
+            flex: 1;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 16px;
+            word-break: break-all;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .copy-btn {
+            background: rgba(106, 90, 205, 0.8);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
+        }
+        
+        .copy-btn:hover {
+            background: rgba(147, 112, 219, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(147, 112, 219, 0.4);
+        }
+        
+        .copy-btn i {
+            font-size: 14px;
+        }
+        
+        .qris-container {
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .qris-container::after {
+            content: 'QRIS PREMIUM';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: #1a1a2e;
+            padding: 3px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .qris-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .qris-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .instructions ol {
+            padding-left: 25px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .instructions li::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9370db;
+        }
+        
+        .highlight {
+            color: white;
+            font-weight: 600;
+            background: rgba(106, 90, 205, 0.3);
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+        
+        .premium-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-card:hover {
+            background: rgba(106, 90, 205, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6a5acd, #9370db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .feature-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+        }
+        
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 15px;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .header p {
+                font-size: 14px;
+            }
+            
+            .payment-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .payment-label {
+                margin-bottom: 10px;
+            }
+            
+            .copy-btn {
+                margin-left: 0;
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .premium-features {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .premium-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .method-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                margin-right: 15px;
+            }
+            
+            .method-title {
+                font-size: 16px;
+            }
+            
+            .method-subtitle {
+                font-size: 13px;
+            }
+        }
+
+        /* Payment Logos */
+        .payment-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>VIP PAYMENT GATEWAY</h1>
+                <p>Premium payment solutions with exclusive VIP features and security</p>
+                <div class="vip-badge">PLATINUM MEMBER</div>
+            </div>
+        </div>
+        
+        <div class="payment-methods">
+            <h2 class="section-title"><i class="fas fa-crown"></i> Premium Payment Methods</h2>
+            
+            <div class="premium-features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-title">Secure Payments</div>
+                    <div class="feature-desc">End-to-end encrypted transactions</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-title">Instant Processing</div>
+                    <div class="feature-desc">Real-time payment verification</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="feature-title">VIP Support</div>
+                    <div class="feature-desc">24/7 dedicated assistance</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="feature-title">Exclusive Benefits</div>
+                    <div class="feature-desc">Special rewards for members</div>
+                </div>
+            </div>
+            
+            <!-- Payment Methods with Logos -->
+            <div class="methods-grid">
+                <!-- DANA Payment Method -->
+                <div class="method-card dana" onclick="toggleMethod(this)">
+                    <div class="method-header">
+                        <div class="method-icon dana">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div>
+                            <div class="method-title">DANA</div>
+                            <div class="method-subtitle">Instant Digital Wallet</div>
+                        </div>
+                    </div>
+                    <div class="method-content">
+                        <div class="payment-details">
+                            <div class="logo-container">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/DANA_logo.svg" alt="DANA Logo" class="payment-logo">
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-label">VIP Account Number</div>
+                                <div class="payment-value">085135366878</div>
+                                <button class="copy-btn" onclick="copyToClipboard('085135366878', event)">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="instructions">
+                                <ol>
+                                    <li>Open <span class="highlight">DANA app</span> on your device</li>
+                                    <li>Select <span class="highlight">"Send"</span> or <span class="highlight">"Transfer"</span> menu</li>
+                                    <li>Enter the VIP account number above</li>
+                                    <li>Input the exact payment amount</li>
+                                    <li>Complete security verification</li>
+                                    <li>Confirm and finish the transaction</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gopay Payment Method -->
+                <div class="method-card gopay" onclick="toggleMethod(this)">
+                    <div class="method-header">
+                        <div class="method-icon gopay">
+                            <i class="fab fa-google-pay"></i>
+                        </div>
+                        <div>
+                            <div class="method-title">Gopay</div>
+                            <div class="method-subtitle">Gojek Payment</div>
+                        </div>
+                    </div>
+                    <div class="method-content">
+                        <div class="payment-details">
+                            <div class="logo-container">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="Gopay Logo" class="payment-logo">
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-label">VIP Account Number</div>
+                                <div class="payment-value">085135366878</div>
+                                <button class="copy-btn" onclick="copyToClipboard('085135366878', event)">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="instructions">
+                                <ol>
+                                    <li>Launch <span class="highlight">Gojek app</span> on your device</li>
+                                    <li>Go to <span class="highlight">"Pay"</span> or <span class="highlight">"Gopay"</span> section</li>
+                                    <li>Choose <span class="highlight">"Transfer"</span> option</li>
+                                    <li>Enter the VIP account number above</li>
+                                    <li>Input the exact payment amount</li>
+                                    <li>Complete security verification</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bank Transfer Method -->
+                <div class="method-card bank" onclick="toggleMethod(this)">
+                    <div class="method-header">
+                        <div class="method-icon bank">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div>
+                            <div class="method-title">Bank Transfer</div>
+                            <div class="method-subtitle">Bank Jago</div>
+                        </div>
+                    </div>
+                    <div class="method-content">
+                        <div class="payment-details">
+                            <div class="logo-container">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Bank_Jago_logo.svg" alt="Bank Jago Logo" class="payment-logo">
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-label">VIP Account Number</div>
+                                <div class="payment-value">100963947764</div>
+                                <button class="copy-btn" onclick="copyToClipboard('100963947764', event)">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-label">Bank Name</div>
+                                <div class="payment-value">Bank Jago</div>
+                            </div>
+                            <div class="instructions">
+                                <ol>
+                                    <li>Open your <span class="highlight">mobile banking</span> app</li>
+                                    <li>Select <span class="highlight">"Transfer"</span> or <span class="highlight">"Send Money"</span></li>
+                                    <li>Choose <span class="highlight">Bank Jago</span> as destination</li>
+                                    <li>Enter the VIP account number above</li>
+                                    <li>Input the exact payment amount</li>
+                                    <li>Complete security verification</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title"><i class="fas fa-qrcode"></i> QRIS Premium Payment</h2>
+            <div class="methods-grid">
+                <!-- QRIS Payment Method -->
+                <div class="method-card qris" onclick="toggleMethod(this)">
+                    <div class="method-header">
+                        <div class="method-icon qris">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div>
+                            <div class="method-title">QRIS Premium</div>
+                            <div class="method-subtitle">All E-Wallets Supported</div>
+                        </div>
+                    </div>
+                    <div class="method-content">
+                        <div class="payment-details">
+                            <div class="logo-container">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/QRIS_logo.svg" alt="QRIS Logo" class="payment-logo">
+                            </div>
+                            <div class="qris-container">
+                                <img src="https://files.catbox.moe/bdhdcz.png" alt="VIP QRIS Payment" class="qris-image">
+                            </div>
+                            <div class="instructions">
+                                <ol>
+                                    <li>Open any <span class="highlight">e-wallet</span> or <span class="highlight">banking app</span> with QRIS support</li>
+                                    <li>Select <span class="highlight">"Scan QR"</span> or <span class="highlight">"Pay with QR"</span></li>
+                                    <li>Point your camera at the VIP QR code above</li>
+                                    <li>Enter payment amount if required</li>
+                                    <li>Complete security verification</li>
+                                    <li>Supports: DANA, Gopay, OVO, LinkAja, ShopeePay, etc</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><i class="fas fa-lock"></i> All transactions are secured with 256-bit encryption</p>
+            <p>Please confirm your payment by sending the receipt to our VIP support</p>
+            <div class="security-badge">
+                <i class="fas fa-shield-alt"></i> SECURE PAYMENT GATEWAY
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle payment method with smooth animation
+        function toggleMethod(card) {
+            const content = card.querySelector('.method-content');
+            const isActive = content.classList.contains('active');
+            
+            // Close all other methods first
+            document.querySelectorAll('.method-content').forEach(el => {
+                if (el !== content) {
+                    el.classList.remove('active');
+                    el.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Toggle current method
+            if (!isActive) {
+                content.classList.add('active');
+                card.classList.add('active');
+                
+                // Smooth scroll to the method
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                content.classList.remove('active');
+                card.classList.remove('active');
+            }
+        }
+        
+        // Enhanced copy to clipboard function
+        function copyToClipboard(text, event) {
+            event.stopPropagation();
+            
+            const originalText = event.target.innerHTML;
+            const originalBg = event.target.style.background;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback
+                event.target.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                event.target.style.background = 'var(--success)';
+                event.target.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.3)';
+                
+                // Create confirmation tooltip
+                const tooltip = document.createElement('div');
+                tooltip.textContent = 'Copied to clipboard!';
+                tooltip.style.position = 'absolute';
+                tooltip.style.bottom = '100%';
+                tooltip.style.left = '50%';
+                tooltip.style.transform = 'translateX(-50%)';
+                tooltip.style.background = 'var(--success)';
+                tooltip.style.color = 'white';
+                tooltip.style.padding = '5px 10px';
+                tooltip.style.borderRadius = '5px';
+                tooltip.style.fontSize = '12px';
+                tooltip.style.marginBottom = '5px';
+                tooltip.style.whiteSpace = 'nowrap';
+                tooltip.style.zIndex = '100';
+                tooltip.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+                
+                event.target.appendChild(tooltip);
+                
+                // Remove tooltip after animation
+                setTimeout(() => {
+                    tooltip.style.transition = 'all 0.3s ease';
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'translateX(-50%) translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        if (event.target.contains(tooltip)) {
+                            event.target.removeChild(tooltip);
+                        }
+                    }, 300);
+                }, 1500);
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    event.target.innerHTML = originalText;
+                    event.target.style.background = originalBg;
+                    event.target.style.boxShadow = '0 4px 15px rgba(106, 90, 205, 0.3)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                // Visual feedback for fallback
+                event.target.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                event.target.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    event.target.innerHTML = originalText;
+                    event.target.style.background = originalBg;
+                }, 2000);
+            });
+        }
+        
+        // Open first method by default
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstMethod = document.querySelector('.method-card');
+            if (firstMethod) {
+                firstMethod.classList.add('active');
+                firstMethod.querySelector('.method-content').classList.add('active');
+            }
+            
+            // Add subtle animation to all method cards
+            const cards = document.querySelectorAll('.method-card');
+            cards.forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
